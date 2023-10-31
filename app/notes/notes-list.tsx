@@ -7,12 +7,14 @@ import NoteEditor from "@/app/notes/note-editor";
 
 interface NotesListProps {
   notes: Note[];
+  searchFilter?: string;
   onNoteUpdate: () => void;
   onNoteDeletion: () => void;
 }
 
 export default function NotesList({
   notes,
+  searchFilter,
   onNoteUpdate,
   onNoteDeletion,
 }: NotesListProps) {
@@ -37,9 +39,12 @@ export default function NotesList({
     }
   }
 
+  const filteredNotes = searchFilter
+    ? notes.filter((note) => note.text.indexOf(searchFilter) >= 0)
+    : notes;
   return (
     <div className="items-center">
-      {notes?.map(({ id, datetime, text }) => (
+      {filteredNotes?.map(({ id, datetime, text }) => (
         <div className="mb-3" key={id}>
           <span className="italic">
             {dayjs(datetime).format("MMM D, YYYY h:mm A")}
