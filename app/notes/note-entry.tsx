@@ -7,6 +7,7 @@ interface NoteEntryProps {
   userId: number;
   onNoteCreation: () => void;
 }
+
 export default function NoteEntry({ userId, onNoteCreation }: NoteEntryProps) {
   const [text, setText] = useState("");
   const { trigger } = useSWRMutation("/api/note", createNote);

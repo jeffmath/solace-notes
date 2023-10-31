@@ -13,27 +13,39 @@ export default function Home() {
   );
 
   async function handleNoteCreation() {
+    await mutate();
     toast.success("Note created", {
       autoClose: 1000,
       hideProgressBar: true,
     });
+  }
+
+  async function handleNoteUpdate() {
     await mutate();
+    toast.success("Note updated", {
+      autoClose: 1000,
+      hideProgressBar: true,
+    });
   }
 
   async function handleNoteDeletion() {
+    await mutate();
     toast.success("Note deleted", {
       autoClose: 1000,
       hideProgressBar: true,
     });
-    await mutate();
   }
 
   return (
-    <main className="p-24 font-mono">
+    <main className="px-24 py-8 font-mono">
       <ToastContainer />
       <div className="items-center text-2xl mb-4">Solace Notes</div>
       <NoteEntry userId={1} onNoteCreation={handleNoteCreation} />
-      <NotesList notes={notes} onNoteDeletion={handleNoteDeletion} />
+      <NotesList
+        notes={notes}
+        onNoteUpdate={handleNoteUpdate}
+        onNoteDeletion={handleNoteDeletion}
+      />
     </main>
   );
 }

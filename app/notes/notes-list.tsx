@@ -1,15 +1,28 @@
 import dayjs from "dayjs";
 import { Note } from "@/models/note";
-import { BsTrash } from "react-icons/bs";
+import { BsPencil, BsTrash } from "react-icons/bs";
 import useSWRMutation from "swr/mutation";
+import { useState } from "react";
+import NoteEditor from "@/app/notes/note-editor";
 
 interface NotesListProps {
   notes: Note[];
+  onNoteUpdate: () => void;
   onNoteDeletion: () => void;
 }
 
-export default function NotesList({ notes, onNoteDeletion }: NotesListProps) {
+export default function NotesList({
+  notes,
+  onNoteUpdate,
+  onNoteDeletion,
+}: NotesListProps) {
   const { trigger } = useSWRMutation("/api/note", deleteNote);
+  const [editId, setEditId] = useState<number | undefined>(undefined);
+
+  function handleUpdate() {
+    setEditId(undefined);
+    onNoteUpdate();
+  }
 
   async function deleteNote(url: string, { arg }: { arg: number }) {
     if (confirm("Are you sure you want to delete this note?")) {
@@ -31,15 +44,35 @@ export default function NotesList({ notes, onNoteDeletion }: NotesListProps) {
           <span className="italic">
             {dayjs(datetime).format("MMM D, YYYY h:mm A")}
           </span>
-          <button
-            type="button"
-            className="ml-3 relative top-0.5"
-            onClick={() => trigger(id)}
-          >
-            <BsTrash />
-          </button>
+          {!editId && (
+            <>
+              <button
+                type="button"
+                className="ml-3 relative top-0.5"
+                onClick={() => setEditId(id)}
+              >
+                <BsPencil />
+              </button>
+              <button
+                type="button"
+                className="ml-3 relative top-0.5"
+                onClick={() => trigger(id)}
+              >
+                <BsTrash />
+              </button>
+            </>
+          )}
           <br />
-          {text}
+          {id !== editId ? (
+            text
+          ) : (
+            <NoteEditor
+              id={id}
+              text={text}
+              onUpdate={() => handleUpdate()}
+              onCancel={() => setEditId(undefined)}
+            />
+          )}
         </div>
       ))}
     </div>
