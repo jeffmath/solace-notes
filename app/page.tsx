@@ -14,8 +14,16 @@ export default function Home() {
 
   async function handleNoteCreation() {
     toast.success("Note created", {
-      position: "top-right",
-      autoClose: 700,
+      autoClose: 1000,
+      hideProgressBar: true,
+    });
+    await mutate();
+  }
+
+  async function handleNoteDeletion() {
+    toast.success("Note deleted", {
+      autoClose: 1000,
+      hideProgressBar: true,
     });
     await mutate();
   }
@@ -25,7 +33,7 @@ export default function Home() {
       <ToastContainer />
       <div className="items-center text-2xl mb-4">Solace Notes</div>
       <NoteEntry userId={1} onNoteCreation={handleNoteCreation} />
-      <NotesList notes={notes} />
+      <NotesList notes={notes} onNoteDeletion={handleNoteDeletion} />
     </main>
   );
 }

@@ -1,18 +1,13 @@
-import { useDataClient } from "@/data-access/use-data-client";
 import dayjs from "dayjs";
+import { makeQuery } from "@/data-access/make-query";
 
 export async function createNote(
   userId: number,
   text: string,
 ): Promise<number> {
-  const client = useDataClient();
-  await client.connect();
-
-  const result = await client.query(
+  const result = await makeQuery(
     'INSERT INTO public."Note" ("userId", "datetime", "text") values ($1, $2, $3)',
     [userId, dayjs().toISOString(), text],
   );
-  await client.end();
-
   return result.rowCount;
 }
