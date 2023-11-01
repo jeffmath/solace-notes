@@ -1,14 +1,19 @@
 import { Button } from "react-bootstrap";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import useSWR from "swr";
 import { toast } from "react-toastify";
 
 export interface LoginFormProps {
+  userName: string;
+  setUserName: (name: string) => void;
   setUserId: (userId: number) => void;
 }
 
-export default function LoginForm({ setUserId }: LoginFormProps) {
-  const [userName, setUserName] = useState("");
+export default function LoginForm({
+  userName,
+  setUserName,
+  setUserId,
+}: LoginFormProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { data: userId } = useSWR(

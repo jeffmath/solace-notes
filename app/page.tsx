@@ -12,6 +12,7 @@ import LoginForm from "@/components/login-form";
 
 export default function Home() {
   const [userId, setUserId] = useState<number | undefined>(undefined);
+  const [userName, setUserName] = useState("");
   const [searchFilter, setSearchFilter] = useState<string | undefined>(
     undefined,
   );
@@ -48,19 +49,33 @@ export default function Home() {
     });
   }
 
+  function logout() {
+    setUserId(undefined);
+    setUserName("");
+  }
+
   return (
     <main className="px-24 py-8 font-mono">
       <ToastContainer />
       <div className="items-center text-2xl mb-4">
         Solace Notes
         {userId && (
-          <span className="text-base">
-            <input
-              className="ml-8 inline"
-              onChange={(event) => setSearchFilter(event.target.value)}
-            />
-            <BsSearch className="ml-2 inline" />
-          </span>
+          <>
+            <span className="text-base ml-8">
+              for {userName} (
+              <span className="underline cursor-pointer" onClick={logout}>
+                logout
+              </span>
+              )
+            </span>
+            <span className="text-base">
+              <input
+                className="ml-10 inline"
+                onChange={(event) => setSearchFilter(event.target.value)}
+              />
+              <BsSearch className="ml-2 inline" />
+            </span>
+          </>
         )}
       </div>
       {userId ? (
@@ -78,7 +93,11 @@ export default function Home() {
           )}
         </>
       ) : (
-        <LoginForm setUserId={setUserId} />
+        <LoginForm
+          userName={userName}
+          setUserName={setUserName}
+          setUserId={setUserId}
+        />
       )}
     </main>
   );
