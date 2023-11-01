@@ -3,7 +3,7 @@ import { Note } from "@/models/note";
 import { BsPencil, BsTrash } from "react-icons/bs";
 import useSWRMutation from "swr/mutation";
 import { useState } from "react";
-import NoteEditor from "@/app/notes/note-editor";
+import NoteEditor from "@/components/note-editor";
 
 interface NotesListProps {
   notes: Note[];

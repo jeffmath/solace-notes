@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import "../globals.css";
+import "../app/globals.css";
 import useSWRMutation from "swr/mutation";
 
 interface NoteEntryProps {
