@@ -80,7 +80,7 @@ export default function Home() {
       </div>
       {userId ? (
         <>
-          <NoteEntry userId={1} onNoteCreation={handleNoteCreation} />
+          <NoteEntry userId={userId} onNoteCreation={handleNoteCreation} />
           {isLoading ? (
             "Loading..."
           ) : (

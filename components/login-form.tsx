@@ -1,7 +1,8 @@
 import { Button } from "react-bootstrap";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { toast } from "react-toastify";
+import { CreateUserAccountForm } from "@/components/create-user-account-form";
 
 export interface LoginFormProps {
   userName: string;
@@ -14,6 +15,8 @@ export default function LoginForm({
   setUserName,
   setUserId,
 }: LoginFormProps) {
+  const [isCreatingAccount, setIsCreatingAccount] = useState(false);
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { data: userId } = useSWR(
@@ -46,20 +49,34 @@ export default function LoginForm({
     setUserName(inputRef.current?.value || "");
   }
 
-  return (
-    <div>
-      Please enter your user name:
-      <br />
-      <input
-        ref={inputRef}
-        onKeyDown={(event) => {
-          if (event.code === "Enter") handleLoginClick();
-        }}
-      />
-      <br />
-      <Button variant="primary" className="mt-2" onClick={handleLoginClick}>
-        Login
-      </Button>
-    </div>
+  function handleCreateClick() {
+    setIsCreatingAccount(true);
+  }
+
+  return isCreatingAccount ? (
+    <CreateUserAccountForm setIsCreatingAccount={setIsCreatingAccount} />
+  ) : (
+    <>
+      <div>
+        Please enter your user name:
+        <br />
+        <input
+          ref={inputRef}
+          onKeyDown={(event) => {
+            if (event.code === "Enter") handleLoginClick();
+          }}
+        />
+        <br />
+        <Button variant="primary" className="mt-2" onClick={handleLoginClick}>
+          Login
+        </Button>
+      </div>
+      <div className="mt-5">
+        Not registered yet?{" "}
+        <span className="underline cursor-pointer" onClick={handleCreateClick}>
+          Create a new user account
+        </span>
+      </div>
+    </>
   );
 }
